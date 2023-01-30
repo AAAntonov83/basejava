@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /**
  * Array based storage for Resumes
  */
@@ -5,26 +7,58 @@ public class ArrayStorage {
     Resume[] storage = new Resume[10000];
 
     void clear() {
+        Arrays.fill(storage, 0, size() - 1, null);
     }
 
     void save(Resume r) {
+        storage[size()] = r;
     }
 
     Resume get(String uuid) {
+        if (size() == 0) {
+            return null;
+        }
+
+        for (Resume resume : storage) {
+            if (resume == null) {
+                return null;
+            }
+            if (resume.uuid.equals(uuid)) {
+                return resume;
+            }
+        }
         return null;
     }
 
     void delete(String uuid) {
+        for (int i = 0; i < storage.length; i++) {
+            if (storage[i] == null) {
+                break;
+            }
+            if (storage[i].uuid.equals(uuid)) {
+                if (i < storage.length - 1) {
+                    System.arraycopy(storage, i + 1, storage, i, size() - 1 - i);
+                }
+                storage[size() - 1] = null;
+            }
+        }
     }
 
     /**
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        return new Resume[0];
+        return Arrays.copyOf(storage, size());
     }
 
     int size() {
-        return 0;
+        int size = 0;
+        for (Resume resume : storage) {
+            if (resume == null) {
+                return size;
+            }
+            size++;
+        }
+        return size;
     }
 }
