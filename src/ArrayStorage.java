@@ -31,15 +31,17 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        for (int i = 0; i < storage.length; i++) {
+        int size = size();
+        for (int i = 0; i < size; i++) {
             if (storage[i] == null) {
                 break;
             }
+
             if (storage[i].uuid.equals(uuid)) {
                 if (i < storage.length - 1) {
-                    System.arraycopy(storage, i + 1, storage, i, size() - 1 - i);
+                    System.arraycopy(storage, i + 1, storage, i, size - 1 - i);
                 }
-                storage[size() - 1] = null;
+                storage[size - 1] = null;
             }
         }
     }
