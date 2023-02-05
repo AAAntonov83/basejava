@@ -40,17 +40,10 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        return Arrays.copyOf(storage, size());
+        return Arrays.copyOf(storage, number);
     }
 
     int size() {
-        int size = 0;
-        for (Resume resume : storage) {
-            if (resume == null) {
-                return size;
-            }
-            size++;
-        }
-        return size;
+        return number;
     }
 }
