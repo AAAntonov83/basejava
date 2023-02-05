@@ -15,16 +15,14 @@ public class ArrayStorage {
     }
 
     Resume get(String uuid) {
-        if (size() == 0) {
+        int size = size();
+        if (size == 0) {
             return null;
         }
 
-        for (Resume resume : storage) {
-            if (resume == null) {
-                return null;
-            }
-            if (resume.uuid.equals(uuid)) {
-                return resume;
+        for (int i = 0; i < size; i++) {
+            if (storage[i].uuid.equals(uuid)) {
+                return storage[i];
             }
         }
         return null;
