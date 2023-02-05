@@ -5,19 +5,19 @@ import java.util.Arrays;
  */
 public class ArrayStorage {
 
-    private int count;
+    private int number;
     Resume[] storage = new Resume[10000];
 
     void clear() {
-        Arrays.fill(storage, 0, count, null);
+        Arrays.fill(storage, 0, number, null);
     }
 
     void save(Resume r) {
-        storage[count++] = r;
+        storage[number++] = r;
     }
 
     Resume get(String uuid) {
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < number; i++) {
             if (storage[i].uuid.equals(uuid)) {
                 return storage[i];
             }
@@ -26,12 +26,12 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < number; i++) {
             if (storage[i].uuid.equals(uuid)) {
                 if (i < storage.length - 1) {
-                    System.arraycopy(storage, i + 1, storage, i, --count - i);
+                    System.arraycopy(storage, i + 1, storage, i, --number - i);
                 }
-                storage[count] = null;
+                storage[number] = null;
             }
         }
     }
