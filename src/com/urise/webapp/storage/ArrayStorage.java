@@ -39,7 +39,6 @@ public class ArrayStorage {
 
     public void save(Resume r) {
         if (findPosition(r.getUuid()) >= 0) {
-            //update?
             System.out.printf("ОШИБКА. Резюме c id \"%s\" уже есть в хранилище.%n", r.getUuid());
             return;
         }
