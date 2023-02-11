@@ -55,7 +55,7 @@ public class ArrayStorage {
     public void update(Resume resume) {
         int index = findPosition(resume.getUuid());
         if (index < 0) {
-            System.out.printf("ОШИБКА. Резюме c id \"%s\" уже отсутствует в хранилище.%n", resume.getUuid());
+            System.out.printf("ОШИБКА. Резюме c id \"%s\" отсутствует в хранилище.%n", resume.getUuid());
             return;
         }
         storage[index] = resume;
