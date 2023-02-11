@@ -48,8 +48,8 @@ public class ArrayStorage {
             System.out.printf("ОШИБКА. Резюме c id \"%s\" отсутствует в хранилище.%n", uuid);
             return;
         }
-        storage[index] = storage[--size];
-        storage[size] = null;
+        storage[index] = storage[size - 1];
+        storage[--size] = null;
     }
 
     public void update(Resume resume) {
