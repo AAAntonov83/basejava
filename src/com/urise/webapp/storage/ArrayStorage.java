@@ -2,71 +2,32 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
-import java.util.Arrays;
+public class ArrayStorage extends AbstractArrayStorage {
 
-/**
- * Array based storage for Resumes
- */
-public class ArrayStorage {
-
-    private int size;
-    private final Resume[] storage = new Resume[10000];
-
-    public int getSize() {
-        return size;
-    }
-
-    public Resume get(String uuid) {
-        int index = findPosition(uuid);
-        if (index < 0) {
-            System.out.printf("ОШИБКА. Резюме c id \"%s\" отсутствует в хранилище.%n", uuid);
-            return null;
-        }
-        return storage[index];
-    }
-
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
-    public Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
-    }
-
+    @Override
     public void save(Resume r) {
-        if (size >= storage.length) {
-            System.out.println("ОШИБКА. База резюме переполнена.");
-        } else if (findPosition(r.getUuid()) >= 0) {
-            System.out.printf("ОШИБКА. Резюме c id \"%s\" уже есть в хранилище.%n", r.getUuid());
+        if (size >= STORAGE_LIMIT) {
+            System.out.println("ERROR. Storage is full.");
+        } else if (findIndex(r.getUuid()) >= 0) {
+            System.out.printf("ERROR. Resume \"%s\" is already in storage.%n", r.getUuid());
         } else {
             storage[size++] = r;
         }
     }
 
+    @Override
     public void delete(String uuid) {
-        int index = findPosition(uuid);
+        int index = findIndex(uuid);
         if (index < 0) {
-            System.out.printf("ОШИБКА. Резюме c id \"%s\" отсутствует в хранилище.%n", uuid);
+            System.out.printf("Resume \"%s\" is not in storage.%n", uuid);
             return;
         }
         storage[index] = storage[size - 1];
         storage[--size] = null;
     }
 
-    public void update(Resume resume) {
-        int index = findPosition(resume.getUuid());
-        if (index < 0) {
-            System.out.printf("ОШИБКА. Резюме c id \"%s\" отсутствует в хранилище.%n", resume.getUuid());
-            return;
-        }
-        storage[index] = resume;
-    }
-
-    public void clear() {
-        Arrays.fill(storage, 0, size, null);
-        size = 0;
-    }
-
-    private int findPosition(String uuid) {
+    @Override
+    protected int findIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
