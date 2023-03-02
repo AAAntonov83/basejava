@@ -1,6 +1,6 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.exception.*;
+import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -12,58 +12,53 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected int size = 0;
 
     @Override
-    protected void updateResume(Resume r) {
-        int index = findIndex(r.getUuid());
-        if (index < 0) {
-            throw new NotExistStorageException(r.getUuid());
-        }
-        storage[index] = r;
+    protected void doUpdate(Object searchKey, Resume r) {
+        storage[(int) searchKey] = r;
     }
 
     @Override
-    protected void saveResume(Resume r) {
-        int index = findIndex(r.getUuid());
-        if (index >= 0) {
-            throw new ExistStorageException(r.getUuid());
-        } else if (size >= STORAGE_LIMIT) {
+    protected void doSave(Object searchKey, Resume r) {
+        if (size >= STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", r.getUuid());
         } else {
-            saveResume(r, Math.abs(index + 1));
+            saveResume(r, Math.abs((int) searchKey + 1));
         }
     }
 
     @Override
-    protected Resume getResume(String uuid) {
-        int index = findIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        return storage[index];
+    protected Resume doGet(Object searchKey) {
+        return storage[(int) searchKey];
     }
 
     @Override
-    protected void deleteResume(String uuid) {
-        int index = findIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        deleteResume(index);
+    protected void doDelete(Object searchKey) {
+        deleteResume((int) searchKey);
     }
 
     @Override
-    protected void clearStorage() {
+    protected void doClear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
     @Override
-    protected Resume[] getAllResumes() {
+    protected Resume[] doGetAll() {
         return Arrays.copyOf(storage, size);
     }
 
     @Override
-    protected int sizeStorage() {
+    protected int doSize() {
         return size;
+    }
+
+    @Override
+    protected Object getSearchKey(Resume r) {
+        return findIndex(r.getUuid());
+    }
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return (int) searchKey >= 0;
     }
 
     protected abstract int findIndex(String uuid);

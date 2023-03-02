@@ -1,59 +1,55 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.exception.*;
 import com.urise.webapp.model.Resume;
 
 import java.util.LinkedList;
 
 public class ListStorage extends AbstractStorage {
+
     final LinkedList<Resume> storage = new LinkedList<>();
 
     @Override
-    protected void clearStorage() {
+    protected void doClear() {
         storage.clear();
     }
 
     @Override
-    protected void updateResume(Resume r) {
-        int index = storage.indexOf(r);
-        if (index < 0) {
-            throw new NotExistStorageException(r.getUuid());
-        }
-        storage.set(index, r);
+    protected void doUpdate(Object searchKey, Resume r) {
+        storage.set((int) searchKey, r);
     }
 
     @Override
-    protected void saveResume(Resume r) {
-        int index = storage.indexOf(r);
-        if (index >= 0) {
-            throw new ExistStorageException(r.getUuid());
-        }
+    protected void doSave(Object searchKey, Resume r) {
         storage.add(r);
     }
 
     @Override
-    protected Resume getResume(String uuid) {
-        int index = storage.indexOf(new Resume(uuid));
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        return storage.get(index);
+    protected Resume doGet(Object searchKey) {
+        return storage.get((int) searchKey);
     }
 
     @Override
-    protected void deleteResume(String uuid) {
-        if (!storage.remove(new Resume(uuid))) {
-            throw new NotExistStorageException(uuid);
-        }
+    protected void doDelete(Object searchKey) {
+        storage.remove((int) searchKey);
     }
 
     @Override
-    protected Resume[] getAllResumes() {
+    protected Resume[] doGetAll() {
         return storage.toArray(new Resume[0]);
     }
 
     @Override
-    public int sizeStorage() {
+    public int doSize() {
         return storage.size();
+    }
+
+    @Override
+    protected Object getSearchKey(Resume r) {
+        return storage.indexOf(r);
+    }
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return (int) searchKey >= 0;
     }
 }
