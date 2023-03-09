@@ -13,38 +13,22 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void update(Resume r) {
-        Object searchKey = getSearchKey(r);
-        if (!isExist(searchKey)) {
-            throw new NotExistStorageException(r.getUuid());
-        }
-        doUpdate(searchKey, r);
+        doUpdate(getExistingSearchKey(r), r);
     }
 
     @Override
     public void save(Resume r) {
-        Object searchKey = getSearchKey(r);
-        if (isExist(searchKey)) {
-            throw new ExistStorageException(r.getUuid());
-        }
-        doSave(searchKey, r);
+        doSave(getNotExistingSearchKey(r), r);
     }
 
     @Override
     public Resume get(String uuid) {
-        Object searchKey = getSearchKey(new Resume(uuid));
-        if (!isExist(searchKey)) {
-            throw new NotExistStorageException(uuid);
-        }
-        return doGet(searchKey);
+        return doGet(getExistingSearchKey(new Resume(uuid)));
     }
 
     @Override
     public void delete(String uuid) {
-        Object searchKey = getSearchKey(new Resume(uuid));
-        if (!isExist(searchKey)) {
-            throw new NotExistStorageException(uuid);
-        }
-        doDelete(searchKey);
+        doDelete(getExistingSearchKey(new Resume(uuid)));
     }
 
     @Override
@@ -55,6 +39,22 @@ public abstract class AbstractStorage implements Storage {
     @Override
     public int size() {
         return doSize();
+    }
+
+    private Object getExistingSearchKey(Resume r) {
+        Object searchKey = getSearchKey(r);
+        if (!isKeyExists(searchKey)) {
+            throw new NotExistStorageException(r.getUuid());
+        }
+        return searchKey;
+    }
+
+    private Object getNotExistingSearchKey(Resume r) {
+        Object searchKey = getSearchKey(r);
+        if (isKeyExists(searchKey)) {
+            throw new ExistStorageException(r.getUuid());
+        }
+        return searchKey;
     }
 
     protected abstract void doClear();
@@ -73,6 +73,6 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract Object getSearchKey(Resume r);
 
-    protected abstract boolean isExist(Object searchKey);
+    protected abstract boolean isKeyExists(Object searchKey);
 
 }

@@ -57,7 +57,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
+    protected boolean isKeyExists(Object searchKey) {
         return (int) searchKey >= 0;
     }
 
