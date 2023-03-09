@@ -52,12 +52,12 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected Object getSearchKey(Resume r) {
-        return findIndex(r.getUuid());
+    protected Object getSearchKey(String uuid) {
+        return findIndex(uuid);
     }
 
     @Override
-    protected boolean isKeyExists(Object searchKey) {
+    protected boolean isExists(Object searchKey) {
         return (int) searchKey >= 0;
     }
 

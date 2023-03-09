@@ -44,12 +44,12 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected Object getSearchKey(Resume r) {
-        return r.getUuid();
+    protected Object getSearchKey(String uuid) {
+        return uuid;
     }
 
     @Override
-    protected boolean isKeyExists(Object searchKey) {
+    protected boolean isExists(Object searchKey) {
         return storage.containsKey((String) searchKey);
     }
 }

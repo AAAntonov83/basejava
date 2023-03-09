@@ -44,12 +44,12 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Object getSearchKey(Resume r) {
-        return storage.indexOf(r);
+    protected Object getSearchKey(String uuid) {
+        return storage.indexOf(new Resume(uuid));
     }
 
     @Override
-    protected boolean isKeyExists(Object searchKey) {
+    protected boolean isExists(Object searchKey) {
         return (int) searchKey >= 0;
     }
 }
