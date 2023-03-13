@@ -9,8 +9,13 @@ public class ListStorage extends AbstractStorage {
     final LinkedList<Resume> storage = new LinkedList<>();
 
     @Override
-    protected void doClear() {
+    public void clear() {
         storage.clear();
+    }
+
+    @Override
+    public Resume[] getAll() {
+        return storage.toArray(new Resume[0]);
     }
 
     @Override
@@ -31,11 +36,6 @@ public class ListStorage extends AbstractStorage {
     @Override
     protected void doDelete(Object searchKey) {
         storage.remove((int) searchKey);
-    }
-
-    @Override
-    protected Resume[] doGetAll() {
-        return storage.toArray(new Resume[0]);
     }
 
     @Override

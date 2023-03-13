@@ -6,10 +6,19 @@ import com.urise.webapp.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
 
-    @Override
-    public void clear() {
-        doClear();
-    }
+    protected abstract void doUpdate(Object searchKey, Resume r);
+
+    protected abstract void doSave(Object searchKey, Resume r);
+
+    protected abstract Resume doGet(Object searchKey);
+
+    protected abstract void doDelete(Object searchKey);
+
+    protected abstract int doSize();
+
+    protected abstract Object getSearchKey(String uuid);
+
+    protected abstract boolean isExists(Object searchKey);
 
     @Override
     public void update(Resume r) {
@@ -32,11 +41,6 @@ public abstract class AbstractStorage implements Storage {
     }
 
     @Override
-    public Resume[] getAll() {
-        return doGetAll();
-    }
-
-    @Override
     public int size() {
         return doSize();
     }
@@ -56,23 +60,4 @@ public abstract class AbstractStorage implements Storage {
         }
         return searchKey;
     }
-
-    protected abstract void doClear();
-
-    protected abstract void doUpdate(Object searchKey, Resume r);
-
-    protected abstract void doSave(Object searchKey, Resume r);
-
-    protected abstract Resume doGet(Object searchKey);
-
-    protected abstract void doDelete(Object searchKey);
-
-    protected abstract Resume[] doGetAll();
-
-    protected abstract int doSize();
-
-    protected abstract Object getSearchKey(String uuid);
-
-    protected abstract boolean isExists(Object searchKey);
-
 }

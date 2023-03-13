@@ -9,8 +9,13 @@ public class MapStorage extends AbstractStorage {
     final HashMap<String, Resume> storage = new HashMap<>();
 
     @Override
-    protected void doClear() {
+    public void clear() {
         storage.clear();
+    }
+
+    @Override
+    public Resume[] getAll() {
+        return storage.values().toArray(new Resume[0]);
     }
 
     @Override
@@ -31,11 +36,6 @@ public class MapStorage extends AbstractStorage {
     @Override
     protected void doDelete(Object searchKey) {
         storage.remove((String) searchKey);
-    }
-
-    @Override
-    protected Resume[] doGetAll() {
-        return storage.values().toArray(new Resume[0]);
     }
 
     @Override
